@@ -118,7 +118,11 @@ function Scene() {
       <ExcelSheet position={[-2.5, -1.8, -1]} rotation={[-0.1, 0.1, 0]} title="Sales_Data.csv" type="CRM" />
       <ExcelSheet position={[2.2, 2.2, -2]} rotation={[0.1, -0.1, 0]} title="Products.db" type="STOCK" />
 
-      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+      {/* enableZoom={false} -> Stops zooming in/out (annoying on scroll)
+    enableRotate={false} -> Stops manual rotation so you can SCROLL the page
+    autoRotate -> Keeps it spinning nicely by itself 
+*/}
+<OrbitControls enableZoom={false} enableRotate={false} autoRotate autoRotateSpeed={0.5} />
     </>
   );
 }
