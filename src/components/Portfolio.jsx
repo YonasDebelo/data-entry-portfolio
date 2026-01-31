@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaCheckCircle, FaArrowRight, FaExchangeAlt } from "react-icons/fa";
+import { FaTimes, FaCheckCircle, FaArrowRight } from "react-icons/fa";
 
 // --- UPDATED PROJECT DATA BASED ON YOUR NEW IMAGES ---
 const projects = [

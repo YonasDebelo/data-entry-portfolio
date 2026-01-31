@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { FaEnvelope, FaPaperPlane, FaCheck } from "react-icons/fa";
+import { FaPaperPlane, FaCheck } from "react-icons/fa";
 import { motion } from "framer-motion";
 import emailjs from '@emailjs/browser';
 
