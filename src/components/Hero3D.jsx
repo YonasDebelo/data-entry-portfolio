@@ -27,67 +27,40 @@ function ExcelSheet({ position, rotation, title, type }) {
   return (
     <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5} floatingRange={[-0.1, 0.1]}>
       <group position={position} rotation={rotation}>
-        
-        {/* 1. The Paper Base */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[width, height, depth]} />
           <meshStandardMaterial color={PAPER_COLOR} roughness={0.1} />
         </mesh>
-
-        {/* 2. The Header Bar */}
         <mesh position={[0, height/2 - 0.15, depth/2 + 0.001]}>
           <planeGeometry args={[width, 0.3]} />
           <meshBasicMaterial color={EXCEL_GREEN} />
         </mesh>
-        
-        {/* 3. The Title Text */}
-        <Text 
-          position={[-width/2 + 0.1, height/2 - 0.15, depth/2 + 0.01]} 
-          fontSize={0.1} 
-          color="white" 
-          anchorX="left"
-          anchorY="middle"
-        >
+        <Text position={[-width/2 + 0.1, height/2 - 0.15, depth/2 + 0.01]} fontSize={0.1} color="white" anchorX="left" anchorY="middle">
           {title}
         </Text>
-
-        {/* 4. The Grid Lines */}
         <group position={[0, -0.15, depth/2 + 0.001]}>
           <GridLine position={[0, 0.3, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, 0.15, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, 0, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, -0.15, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, -0.3, 0]} args={[width, 0.005, 0]} />
-          
           <GridLine position={[-0.3, 0, 0]} args={[0.005, 0.9, 0]} />
           <GridLine position={[0.3, 0, 0]} args={[0.005, 0.9, 0]} />
         </group>
-
-        {/* 5. The Data Text */}
         <group position={[-width/2 + 0.1, -0.15, depth/2 + 0.02]}>
           <Text position={[0, 0.4, 0]} color={TEXT_COLOR} fontSize={0.08} anchorX="left" maxWidth={0.5}>ID</Text>
           <Text position={[0.6, 0.4, 0]} color={TEXT_COLOR} fontSize={0.08} anchorX="left">ITEM</Text>
           <Text position={[1.2, 0.4, 0]} color={TEXT_COLOR} fontSize={0.08} anchorX="left">QTY</Text>
-
           <Text position={[0, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">001</Text>
-          <Text position={[0.6, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">
-            {type === 'CRM' ? "Alpha Co" : "Laptop"}
-          </Text>
+          <Text position={[0.6, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">{type === 'CRM' ? "Alpha Co" : "Laptop"}</Text>
           <Text position={[1.2, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">50</Text>
-
           <Text position={[0, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">002</Text>
-          <Text position={[0.6, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">
-            {type === 'CRM' ? "Beta Inc" : "Mouse"}
-          </Text>
+          <Text position={[0.6, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">{type === 'CRM' ? "Beta Inc" : "Mouse"}</Text>
           <Text position={[1.2, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">120</Text>
-
           <Text position={[0, -0.08, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">003</Text>
-          <Text position={[0.6, -0.08, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">
-            {type === 'CRM' ? "Gamma" : "Cable"}
-          </Text>
+          <Text position={[0.6, -0.08, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">{type === 'CRM' ? "Gamma" : "Cable"}</Text>
           <Text position={[1.2, -0.08, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">25</Text>
         </group>
-
       </group>
     </Float>
   );
@@ -99,7 +72,6 @@ function Scene() {
     <>
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 10, 5]} intensity={2} color="white" />
-      
       <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
       <Sparkles count={100} scale={12} size={2} speed={0.4} opacity={0.5} color="#06b6d4" />
 
@@ -108,11 +80,8 @@ function Scene() {
       <ExcelSheet position={[-2.5, -1.8, -1]} rotation={[-0.1, 0.1, 0]} title="Sales_Data.csv" type="CRM" />
       <ExcelSheet position={[2.2, 2.2, -2]} rotation={[0.1, -0.1, 0]} title="Products.db" type="STOCK" />
 
-      {/* We keep OrbitControls for the 'autoRotate' feature, 
-         but we disable manual interaction. 
-         The REAL fix is in the parent div below. 
-      */}
-      <OrbitControls enableZoom={false} enableRotate={false} autoRotate autoRotateSpeed={0.5} />
+      {/* Keep OrbitControls for auto-rotation, but disable interactions */}
+      <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
     </>
   );
 }
@@ -121,23 +90,25 @@ export default function Hero3D() {
   return (
     <div className="h-screen w-full relative flex items-center justify-center bg-[#0f172a]">
       
-      {/* --- FIX: Added 'pointer-events-none' here --- 
-          This makes the entire 3D Canvas "invisible" to touches/clicks.
-          Your finger will now "fall through" this layer and scroll the page normally. 
+      {/* THE FIX: We apply pointer-events-none to the Wrapper AND the Canvas style.
+         This guarantees that touches pass through to the page scroll.
       */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
+        <Canvas 
+          camera={{ position: [0, 0, 7], fov: 50 }}
+          style={{ pointerEvents: "none" }} // <--- FORCE DISABLE POINTER EVENTS
+        >
           <Scene />
         </Canvas>
       </div>
       
+      {/* Content Layer (Clickable) */}
       <div className="relative z-10 text-center px-4 max-w-4xl pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          // We re-enable pointer events for the buttons/text so they remain clickable
-          className="pointer-events-auto"
+          className="pointer-events-auto" // Re-enable clicks for buttons
         >
           <h2 className="text-sm md:text-base font-bold text-green-400 mb-4 tracking-[0.3em] uppercase">
             SYSTEM STATUS: ONLINE
