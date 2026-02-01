@@ -6,8 +6,8 @@ import { Link } from "react-scroll";
 
 // --- Standard Colors ---
 const EXCEL_GREEN = "#107c41";
-const GRID_COLOR = "#a0a0a0"; // Darker grey for visible lines
-const TEXT_COLOR = "#000000"; // Pure black for readability
+const GRID_COLOR = "#a0a0a0"; 
+const TEXT_COLOR = "#000000"; 
 const PAPER_COLOR = "#ffffff";
 
 // --- Helper: A Single Grid Line ---
@@ -28,19 +28,19 @@ function ExcelSheet({ position, rotation, title, type }) {
     <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5} floatingRange={[-0.1, 0.1]}>
       <group position={position} rotation={rotation}>
         
-        {/* 1. The Paper Base (White Block) */}
+        {/* 1. The Paper Base */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[width, height, depth]} />
           <meshStandardMaterial color={PAPER_COLOR} roughness={0.1} />
         </mesh>
 
-        {/* 2. The Header Bar (Green) */}
+        {/* 2. The Header Bar */}
         <mesh position={[0, height/2 - 0.15, depth/2 + 0.001]}>
           <planeGeometry args={[width, 0.3]} />
           <meshBasicMaterial color={EXCEL_GREEN} />
         </mesh>
         
-        {/* 3. The Title Text (White on Green) */}
+        {/* 3. The Title Text */}
         <Text 
           position={[-width/2 + 0.1, height/2 - 0.15, depth/2 + 0.01]} 
           fontSize={0.1} 
@@ -51,44 +51,36 @@ function ExcelSheet({ position, rotation, title, type }) {
           {title}
         </Text>
 
-        {/* 4. THE GRID LINES (Thick and Visible) */}
+        {/* 4. The Grid Lines */}
         <group position={[0, -0.15, depth/2 + 0.001]}>
-          {/* Horizontal Lines */}
           <GridLine position={[0, 0.3, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, 0.15, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, 0, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, -0.15, 0]} args={[width, 0.005, 0]} />
           <GridLine position={[0, -0.3, 0]} args={[width, 0.005, 0]} />
           
-          {/* Vertical Lines */}
           <GridLine position={[-0.3, 0, 0]} args={[0.005, 0.9, 0]} />
           <GridLine position={[0.3, 0, 0]} args={[0.005, 0.9, 0]} />
         </group>
 
-        {/* 5. THE DATA TEXT (Black and Sharp) */}
-        {/* Note: 'position-z' is slightly higher (0.02) to prevent flickering */}
+        {/* 5. The Data Text */}
         <group position={[-width/2 + 0.1, -0.15, depth/2 + 0.02]}>
-          
-          {/* Header Row */}
           <Text position={[0, 0.4, 0]} color={TEXT_COLOR} fontSize={0.08} anchorX="left" maxWidth={0.5}>ID</Text>
           <Text position={[0.6, 0.4, 0]} color={TEXT_COLOR} fontSize={0.08} anchorX="left">ITEM</Text>
           <Text position={[1.2, 0.4, 0]} color={TEXT_COLOR} fontSize={0.08} anchorX="left">QTY</Text>
 
-          {/* Row 1 */}
           <Text position={[0, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">001</Text>
           <Text position={[0.6, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">
             {type === 'CRM' ? "Alpha Co" : "Laptop"}
           </Text>
           <Text position={[1.2, 0.22, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">50</Text>
 
-          {/* Row 2 */}
           <Text position={[0, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">002</Text>
           <Text position={[0.6, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">
             {type === 'CRM' ? "Beta Inc" : "Mouse"}
           </Text>
           <Text position={[1.2, 0.07, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">120</Text>
 
-          {/* Row 3 */}
           <Text position={[0, -0.08, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">003</Text>
           <Text position={[0.6, -0.08, 0]} color={TEXT_COLOR} fontSize={0.07} anchorX="left">
             {type === 'CRM' ? "Gamma" : "Cable"}
@@ -105,24 +97,22 @@ function ExcelSheet({ position, rotation, title, type }) {
 function Scene() {
   return (
     <>
-      {/* Strong Lighting to make white look white, not grey */}
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 10, 5]} intensity={2} color="white" />
       
       <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
       <Sparkles count={100} scale={12} size={2} speed={0.4} opacity={0.5} color="#06b6d4" />
 
-      {/* Sheet Layout */}
       <ExcelSheet position={[-2.2, 1, 0]} rotation={[0, 0.1, 0]} title="Clients.xlsx" type="CRM" />
       <ExcelSheet position={[2.5, -0.5, 0.5]} rotation={[0, -0.2, 0]} title="Stock_Q1.xlsx" type="STOCK" />
       <ExcelSheet position={[-2.5, -1.8, -1]} rotation={[-0.1, 0.1, 0]} title="Sales_Data.csv" type="CRM" />
       <ExcelSheet position={[2.2, 2.2, -2]} rotation={[0.1, -0.1, 0]} title="Products.db" type="STOCK" />
 
-      {/* enableZoom={false} -> Stops zooming in/out (annoying on scroll)
-    enableRotate={false} -> Stops manual rotation so you can SCROLL the page
-    autoRotate -> Keeps it spinning nicely by itself 
-*/}
-<OrbitControls enableZoom={false} enableRotate={false} autoRotate autoRotateSpeed={0.5} />
+      {/* We keep OrbitControls for the 'autoRotate' feature, 
+         but we disable manual interaction. 
+         The REAL fix is in the parent div below. 
+      */}
+      <OrbitControls enableZoom={false} enableRotate={false} autoRotate autoRotateSpeed={0.5} />
     </>
   );
 }
@@ -130,7 +120,12 @@ function Scene() {
 export default function Hero3D() {
   return (
     <div className="h-screen w-full relative flex items-center justify-center bg-[#0f172a]">
-      <div className="absolute inset-0 z-0">
+      
+      {/* --- FIX: Added 'pointer-events-none' here --- 
+          This makes the entire 3D Canvas "invisible" to touches/clicks.
+          Your finger will now "fall through" this layer and scroll the page normally. 
+      */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <Canvas camera={{ position: [0, 0, 7], fov: 50 }}>
           <Scene />
         </Canvas>
@@ -141,6 +136,7 @@ export default function Hero3D() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          // We re-enable pointer events for the buttons/text so they remain clickable
           className="pointer-events-auto"
         >
           <h2 className="text-sm md:text-base font-bold text-green-400 mb-4 tracking-[0.3em] uppercase">

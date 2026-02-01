@@ -14,7 +14,7 @@ const SkillBadge = ({ icon, name }) => (
   <div className="flex flex-col items-center gap-2 text-gray-400 hover:text-cyan-400 transition-colors">
     <div className="text-5xl">{icon}</div>
     <span className="text-sm font-medium">{name}</span>
-  </div>
+  </div>  
 );
 
 function App() {
@@ -22,9 +22,22 @@ function App() {
     <div className="relative w-full bg-[#0f172a]">
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-[#0f172a]/80 backdrop-blur-md border-b border-white/10">
-        <h1 className="text-2xl font-bold text-white tracking-tighter">
-          YONAS<span className="text-cyan-400">.VA</span>
-        </h1>
+        <div 
+  className="flex items-center gap-2 cursor-pointer" 
+  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+>
+  {/* 1. Your Logo Image */}
+  <img 
+    src="/logo.png" 
+    alt="Yonas Logo" 
+    className="h-10 w-10 object-contain" 
+  />
+
+  {/* 2. The Text */}
+  <h1 className="text-2xl font-bold text-white tracking-tighter">
+    YONAS<span className="text-cyan-400">.VA</span>
+  </h1>
+</div>
         <div className="hidden md:flex gap-8 text-sm font-medium text-gray-300">
           {['About', 'Services', 'Portfolio', 'Tools', 'Contact'].map((item) => (
             <Link 
